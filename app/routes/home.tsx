@@ -2,6 +2,7 @@ import type { Route } from "./+types/home";
 import Navbar from "../../components/Navbar";
 import {ArrowRight, ArrowUpRight, Clock, Layers} from "lucide-react";
 import Button from "../../components/ui/Button";
+import Upload from "../../components/Upload";
 import {useNavigate} from "react-router";
 import {useEffect, useRef, useState} from "react";
 import {createProject, getProjects} from "../../lib/puter.action";
@@ -21,33 +22,27 @@ export default function Home() {
     const handleUploadComplete = async (base64Image: string) => {
         try {
 
-            if(isCreatingProjectRef.current) return false;
-            isCreatingProjectRef.current = true;
+            // if(isCreatingProjectRef.current) return false;
+            // isCreatingProjectRef.current = true;
             const newId = Date.now().toString();
             const name = `Residence ${newId}`;
 
-            const newItem = {
-                id: newId, name, sourceImage: base64Image,
-                renderedImage: undefined,
-                timestamp: Date.now()
-            }
+            // const newItem = {
+            //     id: newId, name, sourceImage: base64Image,
+            //     renderedImage: undefined,
+            //     timestamp: Date.now()
+            // }
 
-            const saved = await createProject({ item: newItem, visibility: 'private' });
+            // const saved = await createProject({ item: newItem, visibility: 'private' });
 
-            if(!saved) {
-                console.error("Failed to create project");
-                return false;
-            }
+            // if(!saved) {
+            //     console.error("Failed to create project");
+            //     return false;
+            // }
 
-            setProjects((prev) => [saved, ...prev]);
+            // setProjects((prev) => [saved, ...prev]);
 
-            navigate(`/visualizer/${newId}`, {
-                state: {
-                    initialImage: saved.sourceImage,
-                    initialRendered: saved.renderedImage || null,
-                    name
-                }
-            });
+            navigate(`/visualizer/${newId}`,);
 
             return true;
         } finally {
@@ -107,6 +102,7 @@ export default function Home() {
                           <p>Supports JPG, PNG, formats up to 10MB</p>
                       </div>
 
+                      <Upload onComplete={handleUploadComplete} />
                   </div>
               </div>
           </section>
